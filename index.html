@@ -1,19 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.22/bundled/lenis.min.js"></script>
+  <title>Portfolio || Sayan Nandi</title>
+  <style>
+    html, body {
+      scroll-behavior: auto !important;
+      overflow-x: hidden;
+    }
 
-    <title>Portfolio || Sayan Nandi</title>
+    body {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+
+    section {
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease-out, opacity 0.6s ease-out;
+    }
+
+    .panel-animate {
+      will-change: transform, opacity;
+    }
+  </style>
 </head>
-
-<script>
-    
-</script>
 <body>
     
     <!-- Navbar -->
@@ -217,10 +233,35 @@
     
   </footer>
 
-  <!-- bootstrap js -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+ <script>
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      smoothTouch: false
+    });
 
-  <!-- javascript.js -->
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // 3D scroll-based panel transform effect
+    const sections = document.querySelectorAll("section");
+    lenis.on('scroll', ({ scroll }) => {
+      sections.forEach((section, i) => {
+        const offset = section.getBoundingClientRect().top;
+        const depth = offset * 0.05;
+        section.style.transform = `translateZ(${depth}px)`;
+        section.style.opacity = 1 - Math.abs(depth) / 200;
+      });
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <!-- Your other JS files -->
   <script src="./javascript.js"></script>
 </body>
 </html>
